@@ -1,6 +1,7 @@
 import Arweave from "arweave";
 import Transaction from "arweave/node/lib/transaction";
 import FileType from "file-type";
+import {JWKInterface} from "arweave/node/lib/wallet";
 
 const client = new Arweave({});
 
@@ -24,7 +25,7 @@ const addTags = (
 };
 
 // publish public content
-export const publish = async (data: Buffer): Promise<string> => {
+export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet"): Promise<string> => {
   const res = await FileType.fromBuffer(data);
   const type = res?.mime || "text/plain";
 
@@ -43,9 +44,11 @@ export const publish = async (data: Buffer): Promise<string> => {
 };
 
 // send private data content
-export const send = async (data: Buffer, address: string): Promise<string> => {
+export const send = async (data: Buffer, address: string, jwk: JWKInterface | "use_wallet"): Promise<string> => {
   const res = await FileType.fromBuffer(data);
   const type = res?.mime || "text/plain";
+
+  // todo encrypt data
 
   const tx = await client.createTransaction(
     {
