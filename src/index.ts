@@ -34,7 +34,7 @@ const addTags = (
 const defaultQuery = ardb.search('transactions').tag("App-Name", APP_NAME)
 
 // publish public content
-export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet"): Promise<string> => {
+export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet" = "use_wallet"): Promise<string> => {
   const res = await FileType.fromBuffer(data);
   const type = res?.mime || "text/plain";
 
@@ -53,7 +53,7 @@ export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet"): P
 };
 
 // send private data content
-export const send = async (data: Buffer, address: string, jwk: JWKInterface | "use_wallet"): Promise<string> => {
+export const send = async (data: Buffer, address: string, jwk: JWKInterface | "use_wallet" = "use_wallet"): Promise<string> => {
   const res = await FileType.fromBuffer(data);
   const type = res?.mime || "text/plain";
 

@@ -7,7 +7,7 @@ import {assert} from "chai";
 describe("Testing Message Choice", () => {
   it("Publish content", (done) => {
     const data = Buffer.from("This is a test")
-    publish(data, "use_wallet").then((id) => {
+    publish(data).then((id) => {
       console.log(id)
       assert(!!id)
     }).finally(() => {
@@ -17,7 +17,7 @@ describe("Testing Message Choice", () => {
   it("Send message", (done) => {
     const data = Buffer.from("This is a test")
     const receiver = ""
-    send(data, receiver, "use_wallet").then((id) => {
+    send(data, receiver).then((id) => {
       console.log(id)
       assert(!!id)
     }).finally(() => {
