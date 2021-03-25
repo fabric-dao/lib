@@ -1,4 +1,22 @@
 {
+  "name": "message-choice",
+  "version": "0.0.0-alpha",
+  "main": "dist/index.js",
+  "repository": "https://github.com/Message-Choice/lib.git",
+  "author": "Fabian Riewe <fabian@kyve.network>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "module": "dist/index.es.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/Message-Choice/lib/issues"
+  },
+  "homepage": "https://github.com/Message-Choice/lib#readme",
   "scripts": {
     "build": "rollup -c",
     "test": "rollup -c rollup.test.js && mocha 'build/index.test.js' --no-timeout --exit"
