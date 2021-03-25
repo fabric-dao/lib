@@ -3,7 +3,14 @@ import Transaction from "arweave/node/lib/transaction";
 import FileType from "file-type";
 import {JWKInterface} from "arweave/node/lib/wallet";
 
+import ArDB from 'ardb';
+
 const client = new Arweave({});
+
+const ardb = new ArDB(client);
+
+
+const APP_NAME = "MessageChoice - DEV"
 
 const addTags = (
   tx: Transaction,
@@ -11,7 +18,7 @@ const addTags = (
 ): Transaction => {
   const allTags = [
     // add default tags
-    {name: "App-Name", value: "MessageChoice - DEV"},
+    {name: "App-Name", value: APP_NAME},
     {name: "App-Version", value: "0.0.0"},
     // add custom tags
     ...(tags || []),
@@ -23,6 +30,8 @@ const addTags = (
 
   return tx;
 };
+
+const defaultQuery = ardb.search('transactions').tag("App-Name", APP_NAME)
 
 // publish public content
 export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet"): Promise<string> => {
@@ -36,7 +45,7 @@ export const publish = async (data: Buffer, jwk: JWKInterface | "use_wallet"): P
     jwk
   );
 
-  addTags(tx, [{name: "Content-Type", value: type}]);
+  addTags(tx, [{name: "Content-Type", value: type}, {name: "Action", value: "Publish"}]);
   await client.transactions.sign(tx, jwk);
   await client.transactions.post(tx);
 
@@ -58,19 +67,21 @@ export const send = async (data: Buffer, address: string, jwk: JWKInterface | "u
     jwk
   );
 
-  addTags(tx, [{name: "Content-Type", value: type}]);
+  addTags(tx, [{name: "Content-Type", value: type}, {name: "Action", value: "Message"}]);
   await client.transactions.sign(tx, jwk);
   await client.transactions.post(tx);
 
   return tx.id;
 };
 
-// load my public feed
-export const feed = () => {
+// load public feed
+export const feed = async (from_address: string) => {
+  return await defaultQuery.from(from_address).tag('Action', 'Publish').findAll();
 };
 
 // load messages with another address
-export const messages = (address: string) => {
+export const messages = async (from_address: string, to_address: string) => {
+  return await defaultQuery.from(from_address).to(to_address).tag('Action', 'Message').findAll();
 };
 
 // subscribe to address

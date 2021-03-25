@@ -78,12 +78,12 @@ anymatch@~3.1.1:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-ar-gql@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/ar-gql/-/ar-gql-0.0.6.tgz#ebb313195c092f27a997440a2835060feaf8df81"
-  integrity sha512-eXKsXGQcx8uwxwlFJzBXA17Qsg+Gty6tcp85IB5SX1iop7NsXLQ/iH2WEz69NCz2/Zcb81C1QryIiNTgw0/4aA==
+ardb@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/ardb/-/ardb-1.0.4.tgz#13c2e63b568641bbfae06221b1928d3c0a1246bd"
+  integrity sha512-GFjow1MskQ92baMZKuwZ4PVNDB4LFK5ZbSdmA+pq34TORlY3Kr9/nEmpiwmtMlObZUqzbhL4BVhVlCKg0bBLiA==
   dependencies:
-    axios "^0.21.1"
+    arweave "^1.10.11"
 
 argparse@^2.0.1:
   version "2.0.1"
