@@ -1,6 +1,6 @@
 {
   "name": "message-choice",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.7",
   "main": "dist/index.js",
   "repository": "https://github.com/Message-Choice/lib.git",
   "author": "Fabian Riewe <fabian@kyve.network>",
@@ -22,8 +22,8 @@
     "test": "rollup -c rollup.test.js && mocha 'build/index.test.js' --no-timeout --exit"
   },
   "dependencies": {
-    "ardb": "^1.0.4",
-    "arweave": "^1.10.11",
+    "ardb": "^1.0.5",
+    "arweave": "^1.10.13",
     "file-type": "^16.3.0"
   },
   "devDependencies": {

@@ -4,6 +4,7 @@ import FileType from "file-type";
 import {JWKInterface} from "arweave/node/lib/wallet";
 
 import ArDB from 'ardb';
+import {GQLEdgeTransactionInterface, GQLTransactionInterface} from "ardb/lib/faces/gql";
 
 const client = new Arweave({
   host: "arweave.net",
@@ -79,8 +80,20 @@ export const send = async (data: Buffer, address: string, jwk: JWKInterface | "u
 };
 
 // load public feed
-export const feed = async (from_address: string) => {
-  return await defaultQuery.from(from_address).tag('Action', 'Publish').findAll();
+export const feed = async (from_address: string | string[]) => {
+  const transactions = await ardb.search('transactions').tag("App-Name", APP_NAME).from(from_address).tag('Action', 'Publish').findAll() as GQLEdgeTransactionInterface[];
+
+  const data: string[] = []
+
+  for (let tx of transactions) {
+    const res = await client.transactions.getData(tx.node.id, {
+      decode: true,
+      string: true,
+    });
+
+    data.push(res.toString());
+  }
+  return data
 };
 
 // load messages with another address
@@ -89,11 +102,35 @@ export const messages = async (from_address: string, to_address: string) => {
 };
 
 // subscribe to address
-// todo maybe as smart contract
-export const subscribe = (address: string) => {
+export const subscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet") => {
+  const tx = await client.createTransaction(
+    {
+      data: Math.random().toString().slice(-4),
+      target: address,
+    },
+    jwk
+  );
+
+  addTags(tx, [{name: "Action", value: "Subscribe"}]);
+  await client.transactions.sign(tx, jwk);
+  await client.transactions.post(tx);
+
+  return tx.id;
 };
 
 // unsubscribe from address
-// todo maybe as smart contract
-export const unsubscribe = (address: string) => {
+export const unsubscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet") => {
+  const tx = await client.createTransaction(
+    {
+      data: Math.random().toString().slice(-4),
+      target: address,
+    },
+    jwk
+  );
+
+  addTags(tx, [{name: "Action", value: "Unsubscribe"}]);
+  await client.transactions.sign(tx, jwk);
+  await client.transactions.post(tx);
+
+  return tx.id;
 };
