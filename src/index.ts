@@ -5,7 +5,11 @@ import {JWKInterface} from "arweave/node/lib/wallet";
 
 import ArDB from 'ardb';
 
-const client = new Arweave({});
+const client = new Arweave({
+  host: "arweave.net",
+  port: 443,
+  protocol: "https",
+});
 
 const ardb = new ArDB(client);
 
