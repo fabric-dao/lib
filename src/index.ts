@@ -83,7 +83,7 @@ export const send = async (data: Buffer, address: string, jwk: JWKInterface | "u
 export const feed = async (from_address: string | string[]) => {
   const transactions = await ardb.search('transactions').tag("App-Name", APP_NAME).from(from_address).tag('Action', 'Publish').findAll() as GQLEdgeTransactionInterface[];
 
-  const data: string[] = []
+  const data: any[] = []
 
   for (let tx of transactions) {
     const res = await client.transactions.getData(tx.node.id, {
@@ -91,7 +91,13 @@ export const feed = async (from_address: string | string[]) => {
       string: true,
     });
 
-    data.push(res.toString());
+    data.push({
+        data: res.toString(),
+        from: tx.node.owner.address,
+        timestamp: tx.node.block.timestamp,
+        to: tx.node.recipient
+      }
+    );
   }
   return data
 };
