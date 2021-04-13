@@ -147,7 +147,9 @@ export const subscriptions = async (for_address: string): Promise<string[]> => {
   const transactions = await ardb.search('transactions').tag("App-Name", APP_NAME).from(for_address).tag('Action', 'Subscribe').findAll() as GQLEdgeTransactionInterface[];
   const subscriptions = []
   for (let transaction of transactions) {
-    subscriptions.push(transaction.node.recipient)
+    if (transaction.node.recipient) {
+      subscriptions.push(transaction.node.recipient)
+    }
   }
 
   return subscriptions
