@@ -80,7 +80,7 @@ export const send = async (data: Buffer, address: string, jwk: JWKInterface | "u
 };
 
 // load public feed
-export const feed = async (from_address: string | string[]) => {
+export const feed = async (from_address: string | string[]): Promise<{ data: string, from: string, timestamp: number | undefined, to: string }[]> => {
   const transactions = await ardb.search('transactions').tag("App-Name", APP_NAME).from(from_address).tag('Action', 'Publish').findAll() as GQLEdgeTransactionInterface[];
 
   const data: any[] = []
@@ -94,21 +94,22 @@ export const feed = async (from_address: string | string[]) => {
     data.push({
         data: res.toString(),
         from: tx.node.owner.address,
-        timestamp: tx.node.block.timestamp,
+        timestamp: tx.node.block?.timestamp || undefined,
         to: tx.node.recipient
       }
     );
   }
+
   return data
 };
 
 // load messages with another address
-export const messages = async (from_address: string, to_address: string) => {
-  return await defaultQuery.from(from_address).to(to_address).tag('Action', 'Message').findAll();
+export const messages = async (from_address: string, to_address: string): Promise<GQLEdgeTransactionInterface[]> => {
+  return await defaultQuery.from(from_address).to(to_address).tag('Action', 'Message').findAll() as GQLEdgeTransactionInterface[];
 };
 
 // subscribe to address
-export const subscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet") => {
+export const subscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet"): Promise<string> => {
   const tx = await client.createTransaction(
     {
       data: Math.random().toString().slice(-4),
@@ -125,7 +126,7 @@ export const subscribe = async (address: string, jwk: JWKInterface | "use_wallet
 };
 
 // unsubscribe from address
-export const unsubscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet") => {
+export const unsubscribe = async (address: string, jwk: JWKInterface | "use_wallet" = "use_wallet"): Promise<string> => {
   const tx = await client.createTransaction(
     {
       data: Math.random().toString().slice(-4),
@@ -139,4 +140,15 @@ export const unsubscribe = async (address: string, jwk: JWKInterface | "use_wall
   await client.transactions.post(tx);
 
   return tx.id;
+};
+
+// load all subscriptions
+export const subscriptions = async (for_address: string): Promise<string[]> => {
+  const transactions = await ardb.search('transactions').tag("App-Name", APP_NAME).from(for_address).tag('Action', 'Subscribe').findAll() as GQLEdgeTransactionInterface[];
+  const subscriptions = []
+  for (let transaction of transactions) {
+    subscriptions.push(transaction.node.recipient)
+  }
+
+  return subscriptions
 };
