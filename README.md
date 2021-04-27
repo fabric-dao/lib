@@ -1,13 +1,13 @@
-# Message Choice
+# Fabric-DAO
 
 ## Installation
 ```
-yarn add message-choice
+yarn add @fabric-dao/lib
 ```
 
 ## Usage
 ```ts
-import { send, publish, messages, feed } from "message-choice";
+import { send, publish, messages, feed } from "@fabric-dao/lib";
 ```
 
 ### Sending a private message
@@ -24,7 +24,7 @@ const txID = await publish(data)
 ```
 
 #### Using a JWK
-By default Message Choice uses ArConnect to handle transactions.
+By default Message Choice uses [ArConnect](https://arconnect.io) to handle transactions.
 If you want to use a JWK simply add it as a parameter into `send(data, receiver, jwk)` or `publish(data, jwk)`
 
 ### Retrieving messages

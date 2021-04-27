@@ -15,7 +15,7 @@ const client = new Arweave({
 const ardb = new ArDB(client);
 
 
-const APP_NAME = "MessageChoice - DEV"
+const APP_NAME = "FabricDAO - DEV"
 
 const addTags = (
   tx: Transaction,

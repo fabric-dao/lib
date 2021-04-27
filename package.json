@@ -1,8 +1,8 @@
 {
-  "name": "message-choice",
-  "version": "0.0.0-alpha.10",
+  "name": "@fabric-dao/lib",
+  "version": "0.0.0-alpha.1",
   "main": "dist/index.js",
-  "repository": "https://github.com/Message-Choice/lib.git",
+  "repository": "https://github.com/fabric-dao/lib.git",
   "author": "Fabian Riewe <fabian@kyve.network>",
   "license": "MIT",
   "publishConfig": {
@@ -14,9 +14,9 @@
   ],
   "types": "dist/index.d.ts",
   "bugs": {
-    "url": "https://github.com/Message-Choice/lib/issues"
+    "url": "https://github.com/fabric-dao/lib/issues"
   },
-  "homepage": "https://github.com/Message-Choice/lib#readme",
+  "homepage": "https://github.com/fabric-dao/lib#readme",
   "scripts": {
     "build": "rollup -c",
     "test": "rollup -c rollup.test.js && mocha 'build/index.test.js' --no-timeout --exit"
